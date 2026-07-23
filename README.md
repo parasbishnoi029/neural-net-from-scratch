@@ -1,2 +1,37 @@
-# neural-net-from-scratch
-A modular deep learning framework built strictly in Python and NumPy without PyTorch or TensorFlow, implementing forward/backward propagation, activation layers, custom optimizers, and trained on MNIST.
+# Neural Network Framework from Scratch
+
+A lightweight, modular deep learning framework built entirely in Python and NumPy. This project implements core deep learning components (layers, activations, optimizers, and loss functions) from first principles, without relying on external libraries like PyTorch or TensorFlow.
+
+## 🚀 Project Overview
+
+The goal of this project was to understand the underlying mathematics and matrix calculus of neural networks by building an engine from scratch. The framework successfully trains a Multi-Layer Perceptron (MLP) on the MNIST dataset, achieving **~97% accuracy**.
+
+## 🧠 Features
+
+*   **Modular Architecture:** Designed with a PyTorch-like `Sequential` container for easy layer stacking.
+*   **Custom Layers:** 
+    *   Fully Connected (Dense) Layer
+    *   ReLU Activation
+*   **Loss Functions:** 
+    *   Softmax Activation combined with Categorical Cross-Entropy (for numerical stability).
+*   **Optimizers:** 
+    *   Stochastic Gradient Descent (SGD)
+    *   Adam (Adaptive Moment Estimation)
+
+## 📐 The Mathematics
+
+This framework explicitly calculates all forward and backward passes using matrix algebra. 
+
+**Dense Layer Forward Pass:**
+$Z = X \cdot W + b$
+
+**Backpropagation Gradients (Chain Rule):**
+*   Weights: $\frac{\partial L}{\partial W} = X^T \cdot dZ$
+*   Biases: $\frac{\partial L}{\partial b} = \sum dZ$
+*   Inputs: $\frac{\partial L}{\partial X} = dZ \cdot W^T$
+
+## ⚙️ How to Run
+
+1. Clone this repository:
+   ```bash
+   git clone [https://github.com/YOUR-USERNAME/neural-net-from-scratch.git](https://github.com/YOUR-USERNAME/neural-net-from-scratch.git)
