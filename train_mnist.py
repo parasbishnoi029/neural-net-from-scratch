@@ -8,7 +8,7 @@ from src.network import Sequential
 print("Downloading MNIST dataset (this may take a minute)...")
 # 1. Fetch data
 # To this (adding as_frame=False):
-mnist = fetch_openml('mnist_784', version=1, cache=True, parser='auto', as_frame=False)
+mnist = fetch_openml('mnist_784', version=1, cache=True, parser='liac-arff', as_frame=False)
 X, y = mnist["data"].to_numpy(), mnist["target"].to_numpy().astype(int)
 
 # 2. Preprocess Data
