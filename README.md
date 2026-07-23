@@ -30,8 +30,17 @@ $Z = X \cdot W + b$
 *   Biases: $\frac{\partial L}{\partial b} = \sum dZ$
 *   Inputs: $\frac{\partial L}{\partial X} = dZ \cdot W^T$
 
-## ⚙️ How to Run
+## ⚡ Try it Live in Google Colab
 
-1. Clone this repository:
-   ```bash
-   git clone [https://github.com/YOUR-USERNAME/neural-net-from-scratch.git](https://github.com/YOUR-USERNAME/neural-net-from-scratch.git)
+You can test this custom framework directly in your browser without installing anything locally. 
+
+**Step 1:** Open a new [Google Colab Notebook](https://colab.research.google.com/).  
+**Step 2:** Paste this into the first cell and run it to download the engine and train the model:
+
+```python
+# Clone the repository and move into the folder
+!git clone [https://github.com/parasbishnoi029/neural-net-from-scratch.git](https://github.com/parasbishnoi029/neural-net-from-scratch.git)
+%cd neural-net-from-scratch
+
+# Run the full training loop
+!python train_mnist.py
