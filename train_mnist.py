@@ -9,7 +9,8 @@ print("Downloading MNIST dataset (this may take a minute)...")
 # 1. Fetch data
 # To this (adding as_frame=False):
 mnist = fetch_openml('mnist_784', version=1, cache=True, parser='liac-arff', as_frame=False)
-X, y = mnist["data"].to_numpy(), mnist["target"].to_numpy().astype(int)
+# To this (just removing the .to_numpy() parts):
+X, y = mnist["data"], mnist["target"].astype(int)
 
 # 2. Preprocess Data
 # Normalize pixel values from 0-255 to 0.0-1.0 to help the network learn faster
