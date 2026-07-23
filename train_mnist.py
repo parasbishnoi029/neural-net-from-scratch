@@ -1,72 +1,73 @@
 import numpy as np
 from sklearn.datasets import fetch_openml
+
 from src.layers import DenseLayer, ReLULayer
 from src.losses import SoftmaxCategoricalCrossEntropy
 from src.optimizers import OptimizerAdam
 from src.network import Sequential
 
 print("Downloading MNIST dataset (this may take a minute)...")
-# 1. Fetch data
-# To this (adding as_frame=False):
+# Using the fixed parser configuration to avoid Pandas errors
 mnist = fetch_openml('mnist_784', version=1, cache=True, parser='liac-arff', as_frame=False)
-# To this (just removing the .to_numpy() parts):
+
+# Prepare the data
 X, y = mnist["data"], mnist["target"].astype(int)
+X = X / 255.0  # Normalize pixel brightness to be between 0.0 and 1.0
 
-# 2. Preprocess Data
-# Normalize pixel values from 0-255 to 0.0-1.0 to help the network learn faster
-X = X / 255.0 
-
-# 3. Build the Neural Network Architecture
-# 784 pixels -> 128 hidden neurons -> ReLU -> 10 output classes (digits 0-9)
+# Define the "Brain"
 model = Sequential([
-    DenseLayer(input_dim=784, output_dim=128),
+    DenseLayer(784, 128),
     ReLULayer(),
-    DenseLayer(input_dim=128, output_dim=10)
+    DenseLayer(128, 10)
 ])
 
-# 4. Initialize Loss and Optimizer (Using Adam for faster convergence)
+# Initialize the loss function and optimizer
 loss_fn = SoftmaxCategoricalCrossEntropy()
 optimizer = OptimizerAdam(learning_rate=0.01)
 
-# 5. Training Loop Setup
+# Training settings
 epochs = 20
 batch_size = 256
 n_samples = X.shape[0]
 
 print("\nStarting Training Loop...")
 for epoch in range(epochs):
-    # Shuffle the dataset before every epoch to prevent memorization
+    # Shuffle the dataset so the network doesn't memorize the order
     permutation = np.random.permutation(n_samples)
     X_shuffled = X[permutation]
     y_shuffled = y[permutation]
     
-    epoch_loss = 0
     correct_predictions = 0
+    total_loss = 0
     
-    # Process the data in mini-batches
+    # Train in batches rather than one image at a time
     for i in range(0, n_samples, batch_size):
         X_batch = X_shuffled[i:i+batch_size]
         y_batch = y_shuffled[i:i+batch_size]
         
-        # --- FORWARD PASS ---
+        # 1. Forward Pass (Make a guess)
         logits = model.forward(X_batch)
-        batch_loss = loss_fn.forward(logits, y_batch)
-        epoch_loss += batch_loss
         
-        # Calculate Accuracy for this batch
+        # 2. Calculate Error (Score the guess)
+        loss = loss_fn.forward(logits, y_batch)
+        total_loss += loss * X_batch.shape[0]
+        
+        # Track accuracy
         predictions = np.argmax(loss_fn.probabilities, axis=1)
         correct_predictions += np.sum(predictions == y_batch)
         
-        # --- BACKWARD PASS ---
-        dZ = loss_fn.backward()
-        model.backward(dZ)
-        
-        # --- OPTIMIZE ---
+        # 3 & 4. Backward Pass and Update Weights (Learn from the mistake)
+        model.backward(loss_fn.backward())
         model.update_parameters(optimizer)
         
-    # Print metrics at the end of every epoch
-    avg_loss = epoch_loss / (n_samples / batch_size)
+    # Print the results at the end of each epoch
     accuracy = (correct_predictions / n_samples) * 100
+    avg_loss = total_loss / n_samples
     print(f"Epoch {epoch + 1}/{epochs} - Loss: {avg_loss:.4f} - Accuracy: {accuracy:.2f}%")
 
 print("\nTraining Complete!")
+
+# ==========================================
+# NEW: Save the fully trained model to a file
+# ==========================================
+model.save("mnist_model.pkl")
