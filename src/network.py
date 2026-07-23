@@ -22,7 +22,7 @@ class Sequential:
         for layer in self.layers:
             # Only update layers that actually have weights (skip ReLULayer)
             if hasattr(layer, 'weights'):
-                optimizer.update(layer)
+                optimizer.update_params(layer)  # <--- Change this line to match!
 
     def save(self, filename):
         """Saves the entire model architecture and trained weights to a file."""
