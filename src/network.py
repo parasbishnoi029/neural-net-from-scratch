@@ -35,3 +35,4 @@ class Sequential:
         with open(filename, 'rb') as file:
             self.layers = pickle.load(file)
         print(f"Model successfully loaded from {filename}")
+ 
