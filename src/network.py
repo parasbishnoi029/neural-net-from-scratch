@@ -1,35 +1,37 @@
+import pickle
 
 class Sequential:
-    def __init__(self, layers):
-        """
-        Initializes the network with a list of layers.
-        Example: [DenseLayer(784, 128), ReLULayer(), DenseLayer(128, 10)]
-        """
-        self.layers = layers
+    def __init__(self, layers=None):
+        # If layers aren't provided, start with an empty list
+        self.layers = layers if layers is not None else []
 
     def forward(self, X):
-        """
-        Passes the input data X through all layers sequentially.
-        """
-        # The output of the first layer becomes the input to the next
-        current_output = X
+        """Passes the data forward through every layer in order."""
         for layer in self.layers:
-            current_output = layer.forward(current_output)
-        return current_output
+            X = layer.forward(X)
+        return X
 
     def backward(self, dZ):
-        """
-        Passes the gradient backward through all layers in reverse order.
-        """
-        # We start with the gradient from the loss function and go backward
-        current_gradient = dZ
+        """Passes the error backward through every layer in reverse order."""
         for layer in reversed(self.layers):
-            current_gradient = layer.backward(current_gradient)
-        return current_gradient
+            dZ = layer.backward(dZ)
+        return dZ
 
     def update_parameters(self, optimizer):
-        """
-        Calls the optimizer to update weights and biases for every layer.
-        """
+        """Tells each layer to update its weights based on the optimizer."""
         for layer in self.layers:
-            optimizer.update_params(layer)
+            # Only update layers that actually have weights (skip ReLULayer)
+            if hasattr(layer, 'weights'):
+                optimizer.update(layer)
+
+    def save(self, filename):
+        """Saves the entire model architecture and trained weights to a file."""
+        with open(filename, 'wb') as file:
+            pickle.dump(self.layers, file)
+        print(f"Model successfully saved to {filename}")
+
+    def load(self, filename):
+        """Loads trained weights and architecture from a file."""
+        with open(filename, 'rb') as file:
+            self.layers = pickle.load(file)
+        print(f"Model successfully loaded from {filename}")
