@@ -44,3 +44,10 @@ You can test this custom framework directly in your browser without installing a
 
 # Run the full training loop
 !python train_mnist.py
+#or 
+# Clone the repository and move into the folder
+!git clone https://github.com/parasbishnoi029/neural-net-from-scratch.git
+%cd neural-net-from-scratch
+
+# Run the full training loop
+!python train_mnist.py
