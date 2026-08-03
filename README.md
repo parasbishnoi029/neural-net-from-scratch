@@ -7,7 +7,7 @@ A lightweight, modular deep learning framework built entirely in Python and NumP
 The goal of this project was to understand the underlying mathematics and matrix calculus of neural networks by building an engine from scratch. The framework successfully trains a Multi-Layer Perceptron (MLP) on the MNIST dataset, achieving **~97% accuracy**.
 
 ## 🧠 Features
-
+ 
 *   **Modular Architecture:** Designed with a PyTorch-like `Sequential` container for easy layer stacking.
 *   **Custom Layers:** 
     *   Fully Connected (Dense) Layer
