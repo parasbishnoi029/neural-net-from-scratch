@@ -1,6 +1,6 @@
 import numpy as np
 from sklearn.datasets import fetch_openml
-from src.network import Sequential
+from src.network import Sequential 
 
 def print_ascii_digit(image_array):
     """Converts a 28x28 numpy array into terminal ASCII art."""
