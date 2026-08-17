@@ -1,5 +1,5 @@
 # Neural Network Framework from Scratch
-
+ 
 A lightweight, modular deep learning framework built entirely in Python and NumPy. This project implements core deep learning components (layers, activations, optimizers, and loss functions) from first principles, without relying on external libraries like PyTorch or TensorFlow.
 
 ## 🚀 Project Overview
